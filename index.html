@@ -1,0 +1,349 @@
+<head>
+  <title>comet</title>
+</head>
+
+<body>
+</body>
+
+
+<template name="login">
+
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password">
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+
+</template>
+
+<template name="jobListing">
+
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label>Job Position</label>
+        <input type="text" name="position" class="form-control" placeholder="Job position">
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" name="location" class="form-control" placeholder="Location">
+      </div>
+      <div class="form-group">
+        <label>Skill Set(separate by comma)</label>
+        <input type="text" name="skillset" class="form-control" placeholder="Skill set">
+      </div>
+      <div class="form-group">
+        <label>Company Logo</label>
+        <input type="file">
+        <p class="help-block">Example block-level help text here.</p>
+      </div>
+      <div class="form-group">
+        <label>Company URL</label>
+        <input type="url" name="url" class="form-control" placeholder="url">
+      </div>
+      <div class="form-group">
+        <label>Company Description</label>
+        <textarea class="form-control" name="description" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+
+</template>
+
+<template name="companySignup">
+
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" name="company" class="form-control" placeholder="Company name">
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password">
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+
+</template>
+
+<template name="jobSignup">
+
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password">
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
+      <!-- <input class="btn btn-default" type="submit" value="Sign Up"/> -->
+    </form>
+  </div>
+
+</template>
+
+<template name="candidates">
+
+  {{> nav}}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <ul class="list-group">
+          <a class="list-group-item" href="/candidates">All Candidates</a>
+          <a class="list-group-item" href="/candidates/yes">Yes List</a>
+          <a class="list-group-item" href="/candidates/interested">Interested in you</a>
+        </ul>
+      </div>
+
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="list-group">
+        {{#each candidates}}
+          <a href="{{pathFor 'candidate'}}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{profile.name}}</h4>
+            <p>{{profile.location}}</p>
+          </a>
+        {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<template name="candidate">
+
+  {{> nav}}
+
+  <div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Warning!</strong> Better check yourself, you're not looking too good.
+  </div>
+
+  <div class="container">
+    <h4 class="list-group-item-heading">{{profile.name}}</h4>
+    <p>{{profile.location}}</p>
+
+    <p class="list-group-item-text">{{profile.summary}}</p>
+
+    <button class="btn btn-primary interested">I'm interested</button>
+  </div>
+
+</template>
+
+<template name="jobs">
+
+  {{> nav}}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <ul class="list-group">
+          <a class="list-group-item" href="/jobs">All jobs</a>
+          <a class="list-group-item" href="/jobs/yes">Yes List</a>
+          <a class="list-group-item" href="/jobs/interested">Interested in you</a>
+        </ul>
+      </div>
+
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="list-group">
+        {{#each jobs}}
+          {{> jobDescription}}
+        {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<template name="jobDescription">
+  <a href="{{pathFor 'job'}}" class="list-group-item">
+    <h4 class="list-group-item-heading">{{profile.company}}</h4>
+    <p>{{profile.location}}</p>
+    <p>{{profile.position}}</p>
+  </a>
+</template>
+
+
+<template name="job">
+
+  {{> nav}}
+
+  <div class="container">
+    <h4 class="list-group-item-heading">{{profile.company}}</h4>
+    <a href="{{profile.url}}" target="_blank">{{profile.url}}</a>
+    <p>{{profile.location}}</p>
+    <p>{{profile.position}}</p>
+
+    <p class="list-group-item-text">{{profile.description}}</p>
+
+    <button class="btn btn-primary interested">I'm interested</button>
+  </div>
+
+</template>
+
+
+
+<template name="chat">
+  {{> nav}}
+
+  <div class="container">
+    <div class="row">
+      {{> matches}}
+
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="list-group">
+        {{#each messages}}
+          <li class="list-group-item">
+            <div>
+              {{senderName sender}}
+            </div>
+            <div>
+              {{line}}
+            </div>
+          </li>
+        {{/each}}
+        </div>
+
+        <form>
+          <div class="form-group">
+            <input type="text" name="message" class="form-control" id="message" placeholder="Message">
+          </div>
+          <button type="submit" class="btn btn-default">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="matches">
+  <div class="col-xs-6 col-sm-4 col-md-3">
+    <ul class="list-group">
+      {{#each matches}}
+        <a href="{{pathFor 'chat'}}" class="list-group-item">{{getUser}}</a>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="previewCompany">
+  {{> nav}}
+
+  <div class="container">
+    <h4 class="list-group-item-heading">{{currentUser.profile.company}}</h4>
+    <a href="{{currentUser.profile.url}}" target="_blank">{{currentUser.profile.url}}</a>
+    <p>{{currentUser.profile.location}}</p>
+    <p>{{currentUser.profile.position}}</p>
+
+    <p class="list-group-item-text">{{currentUser.profile.description}}</p>
+  </div>
+</template>
+
+<template name="previewCandidate">
+  {{> nav}}
+
+  <div class="container">
+    <h4 class="list-group-item-heading">{{currentUser.profile.name}}</h4>
+    <p>{{currentUser.profile.location}}</p>
+
+    <p class="list-group-item-text">{{currentUser.profile.summary}}</p>
+  </div>
+</template>
+
+
+<template name="editCompany">
+  {{> nav}}
+  This is edit
+</template>
+
+<template name="editCandidate">
+  {{> nav}}
+  This is edit
+</template>
+
+
+<template name="top">
+
+  {{> nav}}
+
+  <div class="container">
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <h1>Land a dream job</h1>
+      <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+      <p>To see the difference between static and fixed top navbars, just scroll.</p>
+      <p>
+        <a class="btn btn-lg btn-primary" href="{{pathFor 'companySignup'}}" role="button">Post a job listing &raquo;</a>
+        <a class="btn btn-lg btn-primary" href="{{pathFor 'jobSignup'}}" role="button">Find a job &raquo;</a>
+      </p>
+    </div>
+
+  </div> <!-- /container -->
+
+</template>
+
+
+<template name="nav">
+
+  <nav class="navbar navbar-default navbar-static-top">
+   <div class="container">
+     <div class="navbar-header">
+       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="/">Comet</a>
+     </div>
+     <div id="navbar" class="navbar-collapse collapse">
+       <!-- <ul class="nav navbar-nav">
+         <li><a href="#">Home</a></li>
+       </ul> -->
+       <ul class="nav navbar-nav navbar-right">
+         {{#if currentUser}}
+           <li><a href="#" class="matches">Matches</a></li>
+           <li><a href="{{pathFor 'preview'}}">Preview Profile</a></li>
+           <li><a href="{{pathFor 'edit'}}">Edit Profile</a></li>
+           <li><a href="#" id="logout">Log out</a></li>
+         {{else}}
+          <li><a href="{{pathFor 'login'}}">Login</a></li>
+         {{/if}}
+       </ul>
+     </div><!--/.nav-collapse -->
+   </div>
+ </nav>
+
+</template>
