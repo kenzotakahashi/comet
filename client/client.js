@@ -14,7 +14,6 @@ Template.login.events({
         console.log(error.reason);
       } else {
         if (Meteor.user().profile.type === 'company') {
-          console.log('type is company');
           Router.go('/candidates');
         } else {
           Router.go('/jobs');
@@ -56,7 +55,7 @@ Template.companySignup.events({
     e.preventDefault();
     var user = {
       name: $(e.target).find('[name=name]').val(),
-      company: $(e.target).find('[name=copmany]').val(),
+      company: $(e.target).find('[name=company]').val(),
       email: $(e.target).find('[name=email]').val(),
       password: $(e.target).find('[name=password]').val()
     };
@@ -66,7 +65,7 @@ Template.companySignup.events({
       password: user.password,
       profile: {
         name: user.name,
-        copmany: user.company,
+        company: user.company,
         type: 'company',
         location: '',
         summary: '',
@@ -98,7 +97,18 @@ Template.jobListing.events({
   }
 });
 
-Template.matches.helpers({
+
+
+Template.chat.helpers({
+  'messages': function(){
+    return Chat.find({match: this.matchId});
+  },
+  'senderName': function(sender){
+    return Meteor.users.findOne(sender).profile.name;
+  },
+  'myLine': function(sender){
+    return !! (sender === Meteor.userId());
+  },
   'matches': function(){
     if (Meteor.user().profile.type === 'company') {
       return Matches.find({'company': Meteor.userId()});
@@ -113,18 +123,6 @@ Template.matches.helpers({
     } else {
       return Meteor.users.findOne(this.company).profile.company;
     }
-  }
-});
-
-Template.chat.helpers({
-  'messages': function(){
-    return Chat.find({match: this.matchId});
-  },
-  'senderName': function(sender){
-    return Meteor.users.findOne(sender).profile.name;
-  },
-  'myLine': function(sender){
-    return !! (sender === Meteor.userId());
   }
 });
 
@@ -168,6 +166,42 @@ Template.candidate.events({
   }
 });
 
+Template.editCompany.events({
+  'submit form': function(e, template) {
+    e.preventDefault();
+    var profile = {
+      'profile.name': $(e.target).find('[name=name]').val(),
+      'profile.company': $(e.target).find('[name=company]').val(),
+      'profile.position': $(e.target).find('[name=position]').val(),
+      'profile.location': $(e.target).find('[name=location]').val(),
+      'profile.skillset': $(e.target).find('[name=skillset]').val().split(","),
+      'profile.description': $(e.target).find('[name=description]').val(),
+    };
+    Meteor.call('edit', profile, function(error, result) {
+      if (error)
+        return throwError(error.reason);
+      Router.go('/preview');
+    });
+  }
+});
+
+Template.editCandidate.events({
+  'submit form': function(e, template) {
+    e.preventDefault();
+    var profile = {
+      'profile.name': $(e.target).find('[name=name]').val(),
+      'profile.location': $(e.target).find('[name=location]').val(),
+      'profile.summary': $(e.target).find('[name=summary]').val(),
+    };
+    Meteor.call('edit', profile, function(error, result) {
+      if (error)
+        return throwError(error.reason);
+      Router.go('/preview');
+    });
+  }
+});
+
+
 Template.nav.helpers({
   'name': function() {
     return Meteor.user().profile.name;
@@ -182,7 +216,9 @@ Template.nav.events({
     Router.go('/');
   },
   'click .matches': function(e, template) {
+    //Todo. Handle no matches
     e.preventDefault();
+    console.log(Meteor.user().profile.match[0]);
     Router.go('/chat/' + Meteor.user().profile.match[0]);
   }
 });
